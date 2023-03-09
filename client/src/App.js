@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 
 function App() {
+  // Initialize states for user input, success/error message, and loading status
   const [pagesInput, setPagesInput] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
+      // Send a POST request to the server with user input
       const response = await fetch("http://localhost:5000/api/cutpdf", {
         method: "POST",
         headers: {
@@ -16,14 +20,19 @@ function App() {
         },
         body: JSON.stringify({ pagesInput }),
       });
+
+      // Get the response data and update the message state
       const data = await response.text();
       setMessage(data);
     } catch (err) {
       console.log(err);
       setMessage("An error occurred while processing the PDF");
     }
+
     setLoading(false);
   };
+
+  // Render the form and success/error message
 
   return (
     <div
